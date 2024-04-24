@@ -2,9 +2,8 @@
 
 ## Author
 
-* [Your Name Here]
-* [Your UTA ID Number]
-* [Your UTA Email]
-* [Cats or Dogs?]
-
+* Diwas Sapkota
+* 1001900767
+* dxs0767@mavs.uta.edu
+* Dogs
 * [Video Submission URL -- make sure permissions are open]
