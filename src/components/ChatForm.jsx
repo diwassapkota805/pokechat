@@ -7,17 +7,18 @@ import {CHAT_API} from '../AppConfig';
 // HANDLES INTERACTIONS WITH THE LLM (/backend)
 const ChatForm = ({setSearchResults})=>{
     const [activeQuery, setActiveQuery] = useState('');
-    const chat = (query)=>{
+    const chat = ()=>{
         // AXIOS GET on the POKECHAT API POINT 
 
         const url = `${CHAT_API}/chat/query`;
         axios.get(url, {
             params: {
-                q: query
+                q: activeQuery
             }
         })
         .then((response)=>{
             setSearchResults(response.data);
+            console.log(response.data);
         })
         .catch((error)=>{
             console.log('error')
@@ -26,20 +27,28 @@ const ChatForm = ({setSearchResults})=>{
 
     }
 
-    const handleLabelClick = (e)=>{
-        console.log('you clicked a label')
-        const query = e.target.message;
-        console.log('you clicked a label')
-        setActiveQuery(query);
-        console.log('you clicked a label')
-        chat(activeQuery);
+    const handleInputChange = (e)=> {
+        setActiveQuery(e.target.value);
     }
+
+    const handleSendClick = () => {
+        chat();
+        setActiveQuery('');
+    }
+
+    const handleLabelClick = (e)=>{
+        const query = e.target.message;
+        setActiveQuery(query);
+        chat();
+    }
+
 
     return (
     <div className='chat'>
         <Input fluid 
-        icon={<Icon name='send' inverted circular link />}
+        icon={<Icon name='send' inverted circular link onClick={handleSendClick}/>}
         placeholder='Ask me a Pokemon Question...'
+        onChange={handleInputChange}
         />
         <Label pointing='above' message="strongest pokemon limit 1" onClick={handleLabelClick}> Strongest Pokemon </Label>
         <Label pointing='above' message="weakest pokemon limit 1" onClick={handleLabelClick}> Weakest Pokemon </Label>
