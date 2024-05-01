@@ -39,6 +39,14 @@ const ChatForm = ({ setSearchResults }) => {
         setActiveQuery(e.target.value);
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key == "Enter") {
+            console.log("Enter is pressed");
+            chat(activeQuery);
+            setActiveQuery('');
+        }
+    }
+
     return (
         <div className='chat'>
             <Input
@@ -47,6 +55,7 @@ const ChatForm = ({ setSearchResults }) => {
                 placeholder='Ask me a Pokemon Question...'
                 value={activeQuery}
                 onChange={handleInputChange}
+                onKeyPress={handleKeyPress}
             />
             <Label pointing='above' onClick={() => handleLabelClick('strongest pokemon limit 1')}>
                 Strongest Pokemon
