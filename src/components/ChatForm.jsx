@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import { Input, Icon, Label } from 'semantic-ui-react';
 import axios from 'axios';
 import { CHAT_API } from '../AppConfig';
+import { Loader } from 'semantic-ui-react'
 
 const ChatForm = ({ setSearchResults }) => {
     const [activeQuery, setActiveQuery] = useState('');
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     const chat = (query) => {
+        setLoading(true); // Set loading to true when making the request
         const url = `${CHAT_API}/chat/query`;
         axios
             .get(url, {
@@ -18,10 +22,18 @@ const ChatForm = ({ setSearchResults }) => {
                 const pokemonIDs = response.data.map(pokemon => pokemon.id);
                 setSearchResults(pokemonIDs); // Update the state with only IDs
                 console.log(response.data);
+                setError(null);
             })
             .catch((error) => {
                 console.log('error', error);
-            });
+                setError('An error occurred. Please try again.');
+                setTimeout(() => {
+                    setError(null); // Remove error message after 5 seconds
+                }, 2000);
+            })
+            .finally(() => {
+                setLoading(false);
+            })
     };
 
     const handleSendClick = () => {
@@ -49,6 +61,8 @@ const ChatForm = ({ setSearchResults }) => {
 
     return (
         <div className='chat'>
+            {loading && <Loader active inline='centered' />} {/* Show Loader if loading state is true */}
+            {error && <Label basic color='red'>{error}</Label>}
             <Input
                 fluid
                 icon={<Icon name='send' inverted circular link onClick={handleSendClick} />}
