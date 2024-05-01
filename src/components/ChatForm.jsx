@@ -1,60 +1,64 @@
-
-import React, { useEffect, useRef, useState } from 'react';
-import { Card, Icon, Image, Input, List, Label} from 'semantic-ui-react'
+import React, { useState } from 'react';
+import { Input, Icon, Label } from 'semantic-ui-react';
 import axios from 'axios';
-import {CHAT_API} from '../AppConfig';
+import { CHAT_API } from '../AppConfig';
 
-// HANDLES INTERACTIONS WITH THE LLM (/backend)
-const ChatForm = ({setSearchResults})=>{
+const ChatForm = ({ setSearchResults }) => {
     const [activeQuery, setActiveQuery] = useState('');
-    const chat = ()=>{
-        // AXIOS GET on the POKECHAT API POINT 
 
+    const chat = (query) => {
         const url = `${CHAT_API}/chat/query`;
-        axios.get(url, {
-            params: {
-                q: activeQuery
-            }
-        })
-        .then((response)=>{
-            setSearchResults(response.data);
-            console.log(response.data);
-        })
-        .catch((error)=>{
-            console.log('error')
-            console.log(error);
-        });
-
-    }
-
-    const handleInputChange = (e)=> {
-        setActiveQuery(e.target.value);
-    }
+        axios
+            .get(url, {
+                params: {
+                    q: query,
+                },
+            })
+            .then((response) => {
+                const pokemonIDs = response.data.map(pokemon => pokemon.id);
+                setSearchResults(pokemonIDs); // Update the state with only IDs
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log('error', error);
+            });
+    };
 
     const handleSendClick = () => {
-        chat();
-        setActiveQuery('');
-    }
+        if (activeQuery.trim() !== '') {
+            chat(activeQuery);
+            setActiveQuery('');
+        }
+    };
 
-    const handleLabelClick = (e)=>{
-        const query = e.target.message;
-        setActiveQuery(query);
-        chat();
-    }
+    const handleLabelClick = (query) => {
+        chat(query);
+    };
 
+    const handleInputChange = (e) => {
+        setActiveQuery(e.target.value);
+    };
 
     return (
-    <div className='chat'>
-        <Input fluid 
-        icon={<Icon name='send' inverted circular link onClick={handleSendClick}/>}
-        placeholder='Ask me a Pokemon Question...'
-        onChange={handleInputChange}
-        />
-        <Label pointing='above' message="strongest pokemon limit 1" onClick={handleLabelClick}> Strongest Pokemon </Label>
-        <Label pointing='above' message="weakest pokemon limit 1" onClick={handleLabelClick}> Weakest Pokemon </Label>
-        <Label pointing='above' message="starter pokemon limit 3" onClick={handleLabelClick}> Starter Pokemon </Label>
-    </div>
+        <div className='chat'>
+            <Input
+                fluid
+                icon={<Icon name='send' inverted circular link onClick={handleSendClick} />}
+                placeholder='Ask me a Pokemon Question...'
+                value={activeQuery}
+                onChange={handleInputChange}
+            />
+            <Label pointing='above' onClick={() => handleLabelClick('strongest pokemon limit 1')}>
+                Strongest Pokemon
+            </Label>
+            <Label pointing='above' onClick={() => handleLabelClick('weakest pokemon limit 1')}>
+                Weakest Pokemon
+            </Label>
+            <Label pointing='above' onClick={() => handleLabelClick('starter pokemon limit 3')}>
+                Starter Pokemon
+            </Label>
+        </div>
     );
-}
+};
 
-export {ChatForm};
+export { ChatForm };
