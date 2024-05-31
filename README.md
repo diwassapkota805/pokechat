@@ -6,4 +6,3 @@
 * 1001900767
 * dxs0767@mavs.uta.edu
 * Dogs
-* [Video Submission URL -- make sure permissions are open]
