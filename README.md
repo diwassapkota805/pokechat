@@ -59,3 +59,7 @@ Designs a human-AI interaction model using the Pokémon dataset, maximizing ency
    python chat.py
    
 **IMPORTANT: Change port 5000 to Public. Right-click on the port and select "Public."**
+
+## Demo Video
+Watch the [demo](https://www.youtube.com/watch?v=x-03H2sWPuY) video to see POKÉCHAT in action.
+
