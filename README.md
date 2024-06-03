@@ -35,3 +35,27 @@ Designs a human-AI interaction model using the Pokémon dataset, maximizing ency
 1. **Clone the Repository**:
    ```bash
    git clone [repository link]
+
+2. Navigate to the project directory:
+   ```bash
+   npm install
+
+3. Start the development server:
+   ```bash
+   npm start
+   
+### Backend
+1. Navigate to the backend directory:
+
+   ```bash
+   cd backend
+
+2. Install the necessary Python dependencies:
+   ```bash
+   make install
+   
+3. Run the backend server:
+   ```bash
+   python chat.py
+   
+**IMPORTANT: Change port 5000 to Public. Right-click on the port and select "Public."**
